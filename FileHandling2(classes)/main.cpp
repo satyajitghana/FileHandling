@@ -7,9 +7,37 @@
 //
 
 #include <iostream>
+#include <fstream>
+#include "bank.h"
+
+using namespace std;
+
+bank b[2];
+
+void writedata() {
+    ofstream fout;
+    fout.open("bank.dat", ios::out|ios::binary|ios::ate);
+    for (int i=0;i<5;i++) {
+        b[i].putdata();
+        fout.write((char *)&b[i],sizeof(bank));
+    }
+    fout.close();
+}
+
+void getdata() {
+    ifstream fin;
+    fin.open("bank.dat", ios::in|ios::binary);
+    bank tmp;
+   while (!fin.eof()) {
+        fin.read((char *)&tmp,sizeof(bank));
+        tmp.getdata();
+    }
+    fin.close();
+}
+
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    writedata();
+    getdata();
     return 0;
 }
